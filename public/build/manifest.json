@@ -1,0 +1,58 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app-36884844.css",
+    "src": "resources/js/app.css"
+  },
+  "resources/js/app.js": {
+    "css": [
+      "assets/app-36884844.css"
+    ],
+    "dynamicImports": [
+      "resources/js/src/views/RolePage.vue",
+      "resources/js/src/views/Dashboard.vue",
+      "resources/js/src/views/TaskList.vue",
+      "resources/js/src/views/Dashboard.vue",
+      "resources/js/src/views/Login.vue"
+    ],
+    "file": "assets/app-15e861fa.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/src/views/Dashboard.vue": {
+    "file": "assets/Dashboard-8abd54da.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/src/views/Dashboard.vue"
+  },
+  "resources/js/src/views/Login.vue": {
+    "file": "assets/Login-39ff47b0.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/src/views/Login.vue"
+  },
+  "resources/js/src/views/RolePage.vue": {
+    "file": "assets/RolePage-a2d06ceb.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/src/views/RolePage.vue"
+  },
+  "resources/js/src/views/TaskList.vue": {
+    "file": "assets/TaskList-e32e57ba.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/src/views/TaskList.vue"
+  }
+}

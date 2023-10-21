@@ -1,0 +1,25 @@
+{
+    "name": "Task",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "serve": "vite",
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^4.2.3",
+        "axios": "^1.1.2",
+        "laravel-vite-plugin": "^0.7.5",
+        "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "dotenv": "^16.3.1",
+        "js-cookie": "^3.0.5",
+        "vue": "^3.3.4",
+        "vue-axios": "^3.5.2",
+        "vue-router": "^4.2.1",
+        "vuex": "^4.1.0"
+    }
+}

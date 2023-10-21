@@ -1,0 +1,8 @@
+POST http://127.0.0.1:8000/api/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email":"imrancse94@gmail.com",
+    "password":"Nop@ss1234"
+}

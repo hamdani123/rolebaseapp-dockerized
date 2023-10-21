@@ -1,0 +1,1 @@
+* * * * * root /usr/local/bin/php /var/www/html/app/artisan test:command

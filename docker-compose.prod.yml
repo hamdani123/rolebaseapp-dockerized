@@ -1,0 +1,125 @@
+version: "3.8"
+
+services:
+
+    nginx:
+        build:
+            context: .
+            target: nginx
+        restart: unless-stopped
+        container_name: nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./:/var/www/html/app
+            - .env:/var/www/html/app/.env
+            - ./docker/nginx/ssl:/etc/nginx/conf.d/ssl
+        networks:
+            - rolebase
+            
+    # PHP Service
+    app:
+        build:
+            context: .
+            target: php
+            args:
+                - APP_ENV=prod
+        environment:
+            - APP_ENV=prod
+            - CONTAINER_ROLE=app
+        container_name: app
+        working_dir: /var/www/html/app
+        volumes:
+            - ./:/var/www/html/app
+        ports:
+            - ":9000"
+        depends_on:
+            - database
+            - redis
+            - nginx
+        networks:
+            - rolebase    
+
+    # PHP Service
+    websocket:
+        build:
+            context: .
+            target: php
+            args:
+                - APP_ENV=prod
+        environment:
+            - APP_ENV=prod
+            - CONTAINER_ROLE=websocket
+        container_name: websocket
+        working_dir: /var/www/html/app
+        volumes:
+            - ./:/var/www/html/app
+        ports:
+            - 6001:6001
+        depends_on:
+            - database
+            - redis
+        networks:
+            - rolebase    
+
+    # Database Server
+    database:
+        image: mysql:8.0
+        ports:
+            -   3306:3306
+        environment:
+            - MYSQL_DATABASE=rolebase
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+        container_name: database
+        volumes:
+            - db-data:/var/lib/mysql
+        networks:
+            - rolebase
+
+    # Redis Server
+    redis:
+        image: redis:alpine
+        container_name: redis
+        command: redis-server --appendonly yes --requirepass  "${REDIS_PASSWORD}"
+        ports:
+            - 6379:6379
+        networks:
+            - rolebase
+
+    # Queue Server
+    queue:
+        build:
+            context: .
+            target: php
+            args:
+                - APP_ENV=prod
+        environment:
+            - APP_ENV=prod
+            - CONTAINER_ROLE=queue
+        container_name: queue
+        working_dir: /var/www/html/app
+        volumes:
+            - ./:/var/www/html/app
+        networks:
+            - rolebase
+
+    # Node Server
+    node:
+        build:
+            context: .
+            target: node
+        volumes:
+            - .:/usr/src
+            - ./node_modules:/usr/src/node_modules
+        tty: true
+        container_name: node
+        networks:
+            - rolebase
+volumes:
+    db-data: ~
+
+networks:
+    rolebase:

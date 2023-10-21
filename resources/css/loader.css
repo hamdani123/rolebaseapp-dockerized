@@ -1,0 +1,36 @@
+/* (A) FULL SCREEN WRAPPER */
+#spinner {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 5000000000;
+    background: rgba(16, 16, 16, 0.5);
+    transition: opacity 0.2s;
+}
+
+/* (B) CENTER LOADING SPINNER */
+#spinner img {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%);
+}
+
+
+/* (X) DOES NOT QUITE MATTER */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+#loading {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500000000000000;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(16, 16, 16, 0.5);
+    /*background-image: url(https://i.stack.imgur.com/FhHRx.gif);*/
+    background-repeat: no-repeat;
+    background-position: center;
+}
