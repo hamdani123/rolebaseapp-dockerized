@@ -8,10 +8,36 @@ pipeline {
   stages {
     stage('Deploy') {
       steps {
-        sh 'chmod 777 -R ${WORKSPACE}/*'
-        sh 'rsync -avP --exclude ".env" --exclude "vendor" --exclude ".git" --exclude="storage" --delete ${WORKSPACE}/ ${remote_user}@${staging_server}:${remote_dir}'
-        sh 'scp -r ${WORKSPACE}/docker ${remote_user}@${staging_server}:${remote_dir}'
-      }
+            script {
+                // Print workspace path for debugging
+                echo "Workspace: ${WORKSPACE}"
+                
+                // Change permissions (use cautiously)
+                sh 'chmod 777 -R ${WORKSPACE}/*'
+                
+                // Rsync command with error handling
+                try {
+                    sh '''
+                        set -e  # Exit on error
+                        rsync -avP --exclude ".env" --exclude "vendor" --exclude ".git" --exclude="storage" --delete "${WORKSPACE}/" "${remote_user}@${staging_server}:${remote_dir}"
+                    '''
+                } catch (Exception e) {
+                    echo "Rsync failed: ${e.message}"
+                    error("Deployment failed during rsync")
+                }
+
+                // SCP command with error handling
+                try {
+                    sh '''
+                        set -e  # Exit on error
+                        scp -r "${WORKSPACE}/docker" "${remote_user}@${staging_server}:${remote_dir}"
+                    '''
+                } catch (Exception e) {
+                    echo "SCP failed: ${e.message}"
+                    error("Deployment failed during SCP")
+                }
+            }
+        }
     }
     stage('Project Build'){
         steps{
