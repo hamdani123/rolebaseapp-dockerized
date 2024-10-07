@@ -1,13 +1,9 @@
 pipeline {
   agent any
   environment {
-    staging_server="192.168.0.123"
+    staging_server="103.49.239.60"
     remote_dir="/home/app/rolebase"
     remote_user="app"
-
-    staging_server2="192.168.0.126"
-    remote_dir2="/home/app2/rolebase"
-    remote_user2="app2"
   }
   stages {
     stage('Deploy') {
