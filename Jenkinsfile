@@ -8,7 +8,8 @@ pipeline {
   stages {
     stage('Deploy') {
       steps {
-        sh 'rsync -avP --exclude ".env" --exclude "vendor" --exclude ".git" --exclude "docker" --exclude="storage" --delete ${WORKSPACE}/ ${remote_user}@${staging_server}:${remote_dir}'
+        sh 'rsync -avP --exclude .env --exclude vendor --exclude .git --exclude storage --delete /var/lib/jenkins/workspace/auto-deployment/ app@103.49.239.60:/home/app/rolebase'
+        //sh 'rsync -avP --exclude ".env" --exclude "vendor" --exclude ".git" --exclude "docker" --exclude="storage" --delete ${WORKSPACE}/ ${remote_user}@${staging_server}:${remote_dir}'
         sh 'scp -r ${WORKSPACE}/docker ${remote_user}@${staging_server}:${remote_dir}'
       }
     }
