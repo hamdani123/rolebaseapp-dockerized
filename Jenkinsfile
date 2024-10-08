@@ -8,10 +8,10 @@ pipeline {
   stages {
     stage('Deploy') {
       steps {
-        sh 'cd /home/app'
-        sh 'ls -a'
-        //sh 'rsync -avP --exclude ".env" --exclude "vendor" --exclude ".git" --exclude "docker" --exclude="storage" --delete ${WORKSPACE}/ ${remote_user}@${staging_server}:${remote_dir}'
-        //sh 'scp -r ${WORKSPACE}/docker ${remote_user}@${staging_server}:${remote_dir}'
+        sh 'chmod 777 -R ${WORKSPACE}/*'
+        sh 'rsync -avP --exclude ".env" --exclude "vendor" --exclude ".git" --exclude="storage" --delete ${WORKSPACE}/ ${remote_user}@${staging_server}:${remote_dir}'
+        sh 'scp -r ${WORKSPACE}/docker ${remote_user}@${staging_server}:${remote_dir}'
+        
       }
     }
     
