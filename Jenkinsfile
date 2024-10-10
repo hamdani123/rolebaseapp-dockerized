@@ -2,16 +2,15 @@ pipeline {
   agent any
   environment {
     staging_server="103.49.239.60"
-    remote_dir="/home/app/"
+    remote_dir="/home/app/rolebase"
     remote_user="app"
+
   }
   stages {
     stage('Deploy') {
       steps {
         sh 'chmod 777 -R ${WORKSPACE}/*'
-        sh """
-            rsync -avP -e "ssh -i /path/to/private_key -o StrictHostKeyChecking=no" --exclude=".env" --exclude="vendor" --exclude=".git" --exclude="storage" --delete ${WORKSPACE}/ ${remote_user}@${staging_server}:${remote_dir}
-        """
+        sh 'rsync -avP --exclude ".env" --exclude "vendor" --exclude ".git" --exclude="storage" --delete ${WORKSPACE}/ ${remote_user}@${staging_server}:${remote_dir}'
         sh 'scp -r ${WORKSPACE}/docker ${remote_user}@${staging_server}:${remote_dir}'
 
       }
@@ -28,12 +27,13 @@ pipeline {
         steps{
             sh 'ssh ${remote_user}@${staging_server} "cd ${remote_dir} && sudo -u ${remote_user} docker compose run --rm app php artisan config:cache"'
 
+            sh 'ssh ${remote_user2}@${staging_server2} "cd ${remote_dir2} && sudo -u ${remote_user2} docker-compose run --rm app php artisan config:cache"'
         }
     }
     stage('Migration') {
       steps {
         sh 'ssh ${remote_user}@${staging_server} "cd ${remote_dir} && sudo -u ${remote_user} docker compose run --rm app php artisan migrate"'
-        
+        sh 'ssh ${remote_user2}@${staging_server2} "cd ${remote_dir2} && sudo -u ${remote_user2} docker compose run --rm app php artisan migrate"'
       }
     }
 
