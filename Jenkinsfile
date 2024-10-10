@@ -9,9 +9,15 @@ pipeline {
   stages {
     stage('Deploy') {
       steps {
-        sh 'chmod 777 -R ${WORKSPACE}/*'
-        sh 'rsync -avP --exclude ".env" --exclude "vendor" --exclude ".git" --exclude="storage" --delete ${WORKSPACE}/ ${remote_user}@${staging_server}:${remote_dir}'
-        sh 'scp -r ${WORKSPACE}/docker ${remote_user}@${staging_server}:${remote_dir}'
+        // Change permissions securely
+        sh 'find ${WORKSPACE} -type d -exec chmod 755 {} \\;'
+        sh 'find ${WORKSPACE} -type f -exec chmod 644 {} \\;'
+
+        // Sync files excluding certain directories
+        sh "rsync -avP --exclude='.env' --exclude='vendor' --exclude='.git' --exclude='storage' --delete '${WORKSPACE}/' '${remote_user}@${staging_server}:${remote_dir}'"
+        
+        // Copy the docker directory
+        sh "scp -r '${WORKSPACE}/docker' '${remote_user}@${staging_server}:${remote_dir}'"
 
       }
     }
