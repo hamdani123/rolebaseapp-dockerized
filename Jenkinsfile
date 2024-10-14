@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment {
     staging_server="103.49.239.60"
-    remote_dir="/var/www/html/rolebaseapp-dockerrized"
+    remote_dir="/var/www/html/rolebaseapp-dockerized"
     remote_user="app"
 
   }
